@@ -18,4 +18,3 @@ using System.Runtime.InteropServices;
 [assembly: Guid("3fef5faa-cead-46e2-ba5d-77cec36a8d0a")]
 
 [assembly: PanelExtension]
-    
