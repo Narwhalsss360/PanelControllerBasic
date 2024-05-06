@@ -13,7 +13,7 @@ namespace PanelControllerBasic.Channels
             get => $"Serial Port {_port.PortName}";
         }
 
-        private SerialPort _port = new() { PortName = "COM1", BaudRate = 115200, DtrEnable = true, RtsEnable = true };
+        private readonly SerialPort _port = new() { PortName = "COM1", BaudRate = 115200, DtrEnable = true, RtsEnable = true };
 
         public bool IsOpen => _port.IsOpen;
 
