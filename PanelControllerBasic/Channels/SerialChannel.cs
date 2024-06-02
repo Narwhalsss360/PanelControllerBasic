@@ -1,7 +1,6 @@
 ﻿using PanelController.PanelObjects;
 using PanelController.PanelObjects.Properties;
 using System.IO.Ports;
-using System.Text;
 
 namespace PanelControllerBasic.Channels
 {
@@ -24,7 +23,7 @@ namespace PanelControllerBasic.Channels
 
         public SerialChannel()
         {
-            _port.DataReceived += (sender, e) => BytesReceived?.Invoke(this, Encoding.UTF8.GetBytes(_port.ReadExisting()));
+            _port.DataReceived += DataReceived;
         }
 
         public SerialChannel(string portName, int baudrate, int millisecondsWait = 50)
@@ -33,6 +32,20 @@ namespace PanelControllerBasic.Channels
             _port.PortName = portName;
             _port.BaudRate = baudrate;
             MillisecondsWait = millisecondsWait;
+        }
+
+        private void ProcessReceive()
+        {
+            byte[] bytes = new byte[_port.BytesToRead];
+            _port.Read(bytes, 0, bytes.Length);
+            BytesReceived?.Invoke(this, bytes);
+        }
+
+        private void DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+            if (e.EventType == SerialData.Eof)
+                return;
+            ProcessReceive();
         }
 
         public void Close()
@@ -57,6 +70,8 @@ namespace PanelControllerBasic.Channels
                 return e;
             }
 
+            _port.DiscardInBuffer();
+            _port.DiscardOutBuffer();
             Task.Delay(MillisecondsWait).Wait();
             return null;
         }
