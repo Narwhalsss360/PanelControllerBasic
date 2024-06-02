@@ -7,6 +7,18 @@
         mc:Ignorable="d"
         Title="LogWindow" Height="450" Width="800">
     <Grid Margin="5">
-        <TextBox x:Name="LogBox" IsReadOnly="True"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <TextBox x:Name="FormatTextBox" Margin="5" AcceptsReturn="True" Width="80"/>
+            <Button x:Name="ApplyFormatButton" Content="Apply" Width="55" Margin="5" Click="ApplyFormatButton_Click"/>
+            <Rectangle Margin="10, 0, 10, 0" Width="1" Height="30" Stroke="Black"/>
+            <CheckBox x:Name="ScrollToEnd" Margin="5" Content="Auto-Scroll" VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <TextBox x:Name="LogBox" Grid.Row="1" IsReadOnly="True" VerticalScrollBarVisibility="Visible"/>
     </Grid>
 </Window>
