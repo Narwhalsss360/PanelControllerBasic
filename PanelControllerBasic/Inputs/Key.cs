@@ -1,5 +1,6 @@
 ﻿using PanelController.PanelObjects;
 using PanelController.PanelObjects.Properties;
+using System.Security.AccessControl;
 using WindowsInput;
 using WindowsInput.Native;
 
@@ -11,7 +12,14 @@ namespace PanelControllerBasic.Inputs
         {
             Down,
             Up,
-            Press
+            Press,
+            Toggle
+        }
+
+        [ItemName]
+        public string Name
+        {
+            get => $"Key-{KeyCode}";
         }
 
         [UserProperty]
@@ -22,15 +30,21 @@ namespace PanelControllerBasic.Inputs
 
         private delegate IKeyboardSimulator SimulateKey(VirtualKeyCode code);
 
-        private static readonly Dictionary<KeySimulationTypes, SimulateKey> s_simulators = new()
+        private readonly Dictionary<KeySimulationTypes, SimulateKey> s_simulators = new()
         {
             { KeySimulationTypes.Down, Contractor.InputSimulator.Keyboard.KeyDown },
             { KeySimulationTypes.Up, Contractor.InputSimulator.Keyboard.KeyUp },
             { KeySimulationTypes.Press, Contractor.InputSimulator.Keyboard.KeyPress },
+            { KeySimulationTypes.Toggle, Contractor.KeyToggle }
         };
-        public Key() { }
+
+        public Key()
+        {
+            Contractor.Init();
+        }
 
         public Key(KeySimulationTypes simulationType, VirtualKeyCode keyCode)
+            : this()
         {
             SimulationType = simulationType;
             KeyCode = keyCode;
