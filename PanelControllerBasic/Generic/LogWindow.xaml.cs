@@ -22,6 +22,9 @@ namespace PanelControllerBasic.Generic
             }
         }
 
+        [UserProperty]
+        public Logger.Levels Level { get; set; } = Logger.Levels.Info;
+
         public LogWindow()
         {
             InitializeComponent();
@@ -30,10 +33,16 @@ namespace PanelControllerBasic.Generic
         }
 
         public LogWindow(string format)
+            : this()
         {
-            InitializeComponent();
-            Loaded += LogWindow_Loaded;
             Format = format;
+            Show();
+        }
+
+        public LogWindow(string format, Logger.Levels initialLevel)
+            : this(format)
+        {
+            Level = initialLevel;
             Show();
         }
 
@@ -47,6 +56,9 @@ namespace PanelControllerBasic.Generic
 
         private void AddLog(Logger.HistoricalLog log)
         {
+            if (log.Level < Level)
+                return;
+
             LogBox.Text += log.ToString(Format);
             if (ScrollToEnd.IsChecked ?? false)
             {
