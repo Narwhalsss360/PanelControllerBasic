@@ -10,12 +10,21 @@ namespace PanelControllerBasic.General
         [UserProperty]
         public string Path { get; set; } = string.Empty;
 
+        [UserProperty]
+        public bool IsRunning { get => _process is not null && !_process.HasExited; }
+
+        [UserProperty]
+        public List<string> Arguments { get; set; } = new();
+
+        [ItemName]
+        public string Name
+        {
+            get => $"Execute:{ProcessFile.Name}";
+        }
+
         private FileInfo ProcessFile { get => new(Path); }
 
         private Process? _process = null;
-
-        [UserProperty]
-        public bool IsRunning { get => _process is not null && !_process.HasExited; }
 
         public Execute() { }
 

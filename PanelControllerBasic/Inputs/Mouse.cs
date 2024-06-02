@@ -8,6 +8,12 @@ namespace PanelControllerBasic.Inputs
         [UserProperty]
         public int ButtonID { get; private set; }
 
+        [ItemName]
+        public string Name
+        {
+            get => $"MouseButton-{ButtonID}";
+        }
+
         public object? Run()
         {
             Contractor.InputSimulator.Mouse.XButtonDoubleClick(ButtonID);

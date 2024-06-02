@@ -1,6 +1,7 @@
 ﻿using PanelController.Controller;
 using PanelController.PanelObjects;
 using PanelController.PanelObjects.Properties;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace PanelControllerBasic.General
 {
@@ -8,6 +9,17 @@ namespace PanelControllerBasic.General
     public class LogMessage : IPanelAction
     {
         public delegate string FormatReplaceValueFunction();
+
+        [ItemName]
+        public string Name
+        {
+            get
+            {
+                if (Message.Length > 5)
+                    return $"Log:\"{Message[..4]}\"...";
+                return $"Log:\"{Message}\"";
+            }
+        }
 
         [UserProperty]
         public Dictionary<string, FormatReplaceValueFunction> Formatters { get; } = new()

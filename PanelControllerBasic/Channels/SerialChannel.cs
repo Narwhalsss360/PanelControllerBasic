@@ -18,6 +18,11 @@ namespace PanelControllerBasic.Channels
 
         public event EventHandler<byte[]>? BytesReceived;
 
+        public string Status
+        {
+            get => $"{_port.PortName}@{_port.BaudRate}baud:{(IsOpen ? "Opened" : "Closed")}";
+        }
+
         [UserProperty]
         public int MillisecondsWait { get; set; } = 50;
 
